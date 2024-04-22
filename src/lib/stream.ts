@@ -20,11 +20,15 @@ async function chatStream(
 	port: chrome.runtime.Port
 ) {
 	const parser = new StringOutputParser()
+	let content: string = ""
 	const stream = await model
 		.pipe(parser)
 		.stream(prompt)
 	for await (const chunk of stream) {
-		port.postMessage(chunk)
+		if (chunk !== "" && chunk != undefined && chunk != null) {
+			content += chunk
+			port.postMessage(content)
+		}
 	}
 	port.postMessage("[DONE]")
 }
@@ -57,6 +61,9 @@ export default async function handleStream(
 			model = new ChatOpenAI({
 				model: body.apiModel,
 				apiKey: body.apiKey,
+				configuration: {
+					baseURL: body.apiUrl,
+				}
 			})
 			await chatStream(model, finalPrompt, port)
 			break
