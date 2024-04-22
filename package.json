@@ -1,7 +1,7 @@
 {
 	"name": "notionai-plus",
 	"displayName": "NotionAI Plus",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "NotionAI Plus is a browser extension that brings the power of NotionAI to any website you visit.",
 	"scripts": {
 		"dev": "plasmo dev",
@@ -13,6 +13,11 @@
 		"@headlessui/react": "^1.7.17",
 		"@headlessui/tailwindcss": "^0.1.3",
 		"@heroicons/react": "^2.0.18",
+		"@langchain/community": "^0.0.50",
+		"@langchain/core": "^0.1.58",
+		"@langchain/google-genai": "^0.0.11",
+		"@langchain/groq": "^0.0.8",
+		"@langchain/openai": "^0.0.28",
 		"@plasmohq/messaging": "^0.1.8",
 		"@plasmohq/storage": "^1.9.0",
 		"@radix-ui/themes": "^2.0.1",
@@ -21,6 +26,7 @@
 		"claude-ai": "^1.2.2",
 		"eventsource-parser": "^1.1.1",
 		"jotai": "^2.6.0",
+		"langchain": "^0.1.34",
 		"lodash-es": "^4.17.21",
 		"lucide-react": "^0.121.0",
 		"ofetch": "^1.3.3",

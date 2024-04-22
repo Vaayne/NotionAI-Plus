@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.6 - 2024-04-22
+
+### Changed
+
+- Introduce langchain as backend engine provider
+
 ## v0.1.5 - 2024-01-07
 
 ### Fixed

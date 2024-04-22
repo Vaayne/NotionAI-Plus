@@ -8,12 +8,14 @@ export const storage = new Storage({
 	area: "local",
 })
 
-export const DEFAULT_OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
+export const DEFAULT_OPENAI_API_URL = "https://api.openai.com/v1"
 export const DEFAULT_OPENAI_API_MODEL = "gpt-3.5-turbo"
 export const DEFAULT_CHATGPT_MODEL = "text-davinci-002-render-sha"
 
 export const DEFAULT_GOOGLE_AI_HOST = "https://generativelanguage.googleapis.com"
 export const DEFAULT_GOOGLE_AI_MODEL = "gemini-pro"
+
+export const DEFAULT_GROQ_API_MODEL = "llama3-8b-8192"
 
 export const engineAtom = atom<string>(EngineEnum.OpenAIAPI)
 export const notionSpaceIdAtom = atom<string>("")
@@ -25,6 +27,8 @@ export const chatGPTModelAtom = atom<string>(DEFAULT_CHATGPT_MODEL)
 export const googleAIModelAtom = atom<string>(DEFAULT_GOOGLE_AI_MODEL)
 export const googleAIHostAtom = atom<string>(DEFAULT_GOOGLE_AI_HOST)
 export const googleAIKeyAtom = atom<string>("")
+export const groqApiKeyAtom = atom<string>("")
+export const groqApiModelAtom = atom<string>(DEFAULT_GROQ_API_MODEL)
 export const isEnableContextMenuAtom = atom(true)
 
 export const processTypeAtom = atom(ProcessTypeEnum.Text)
@@ -74,6 +78,8 @@ export const InitAtomComponent = () => {
 	const setGoogleAIModel = useSetAtom(googleAIModelAtom)
 	const setGoogleAIKey = useSetAtom(googleAIKeyAtom)
 	const setGoogleAIHost = useSetAtom(googleAIHostAtom)
+	const setGroqApiKey = useSetAtom(groqApiKeyAtom)
+	const setGroqApiModel = useSetAtom(groqApiModelAtom)
 
 	useEffect(() => {
 		const fetchAndSetAllData = async () => {
@@ -87,6 +93,8 @@ export const InitAtomComponent = () => {
 			await fetchAndSetData(ConstEnum.GOOGLE_AI_MODEL, setGoogleAIModel)
 			await fetchAndSetData(ConstEnum.GOOGLE_AI_KEY, setGoogleAIKey)
 			await fetchAndSetData(ConstEnum.GOOGLE_AI_HOST, setGoogleAIHost)
+			await fetchAndSetData(ConstEnum.GROQ_API_KEY, setGroqApiKey)
+			await fetchAndSetData(ConstEnum.GROQ_API_MODEL, setGroqApiModel)
 			const isEnableContext = await storage.get(
 				ConstEnum.IS_ENABLE_CONTEXT_MENU
 			)
