@@ -1,6 +1,9 @@
+import { BaseChatModel } from "@langchain/core/language_models/chat_models"
+import { StringOutputParser } from "@langchain/core/output_parsers"
+import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
+import { ChatOpenAI } from "@langchain/openai"
 import { BardChat } from "~lib/api/bard"
 import { BingChat } from "~lib/api/bing"
-import OpenAIAPIChat from "~lib/api/openai-api"
 import { ChatGPTWebChat } from "~lib/api/chatgpt-web"
 import { NotionCompletion } from "~lib/api/notion-completion"
 import { EngineEnum } from "~lib/enums"
@@ -9,9 +12,22 @@ import {
 	buildChatGPTinstruction,
 	type RequestBody,
 } from "~lib/utils/prompt"
-
 import { ClaudeChat } from "./api/claude"
-import GoogleAIChat from "./api/google-ai"
+
+async function chatStream(
+	model: BaseChatModel,
+	prompt: string,
+	port: chrome.runtime.Port
+) {
+	const parser = new StringOutputParser()
+	const stream = await model
+		.pipe(parser)
+		.stream(prompt)
+	for await (const chunk of stream) {
+		port.postMessage(chunk)
+	}
+	port.postMessage("[DONE]")
+}
 
 export default async function handleStream(
 	body: RequestBody,
@@ -19,6 +35,9 @@ export default async function handleStream(
 ) {
 	const instruction: string = buildChatGPTinstruction(body)
 	const prompt: string = buildChatGPTPrompt(body)
+
+	const finalPrompt: string = `${instruction}\n\n${prompt}`
+	var model: BaseChatModel
 
 	switch (body.engine) {
 		case EngineEnum.ChatGPT:
@@ -35,23 +54,18 @@ export default async function handleStream(
 			await ClaudeChat(`${instruction}\n\n${prompt}`, port)
 			break
 		case EngineEnum.OpenAIAPI:
-			await OpenAIAPIChat(
-				body.apiUrl,
-				instruction,
-				prompt,
-				body.apiKey,
-				body.apiModel,
-				port
-			)
+			model = new ChatOpenAI({
+				model: body.apiModel,
+				apiKey: body.apiKey,
+			})
+			await chatStream(model, finalPrompt, port)
 			break
 		case EngineEnum.GoogleAI:
-			await GoogleAIChat(
-				`${instruction}\n\n${prompt}`,
-				body.apiUrl,
-				body.apiKey,
-				body.apiModel,
-				port
-			)
+			model = new ChatGoogleGenerativeAI({
+				model: body.apiModel,
+				apiKey: body.apiKey,
+			})
+			await chatStream(model, finalPrompt, port)
 			break
 		case EngineEnum.GoogleBard:
 			await BardChat(`${instruction}\n\n${prompt}`, port)
