@@ -8,6 +8,7 @@ import {
 	X,
 } from "lucide-react"
 import { useEffect } from "react"
+import browser from "webextension-polyfill"
 import {
 	chatGPTModelAtom,
 	contextAtom,
@@ -15,6 +16,8 @@ import {
 	googleAIHostAtom,
 	googleAIKeyAtom,
 	googleAIModelAtom,
+	groqApiKeyAtom,
+	groqApiModelAtom,
 	isLoadingAtom,
 	isShowContextAtom,
 	isShowElementAtom,
@@ -31,9 +34,8 @@ import {
 	selectedPromptAtom,
 } from "~lib/atoms"
 import { EngineEnum, PromptTypeEnum } from "~lib/enums"
-import ContextMenuComponent from "./context_menu"
-import browser from "webextension-polyfill"
 import type { RequestBody } from "~lib/utils/prompt"
+import ContextMenuComponent from "./context_menu"
 
 export default function ComboxComponent() {
 	const notionSpaceId = useAtomValue(notionSpaceIdAtom)
@@ -41,9 +43,14 @@ export default function ComboxComponent() {
 	const openAIAPIHost = useAtomValue(openAIAPIHostAtom)
 	const openAIAPIModel = useAtomValue(openAIAPIModelAtom)
 	const chatGPTModel = useAtomValue(chatGPTModelAtom)
+
 	const googleAiHost = useAtomValue(googleAIHostAtom)
 	const googleAiKey = useAtomValue(googleAIKeyAtom)
 	const googleAiModel = useAtomValue(googleAIModelAtom)
+
+	const groqApiKey = useAtomValue(groqApiKeyAtom)
+	const groqApiModel = useAtomValue(groqApiModelAtom)
+
 	const engine = useAtomValue(engineAtom)
 	const selectedPrompt = useAtomValue(selectedPromptAtom)
 	const [context, setContext] = useAtom(contextAtom)
@@ -143,6 +150,9 @@ export default function ComboxComponent() {
 			body.apiUrl = googleAiHost
 			body.apiKey = googleAiKey
 			body.apiModel = googleAiModel
+		} else if (engine === EngineEnum.Groq) {
+			body.apiKey = groqApiKey
+			body.apiModel = groqApiModel
 		}
 
 		console.log(body)

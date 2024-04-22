@@ -26,6 +26,8 @@ import {
 	googleAIHostAtom,
 	googleAIKeyAtom,
 	googleAIModelAtom,
+	groqApiKeyAtom,
+	groqApiModelAtom,
 	isEnableContextMenuAtom,
 	notionSpaceIdAtom,
 	notionSpacesAtom,
@@ -79,6 +81,8 @@ function Options() {
 	const [googleAiHost, setGoogleAIHost] = useAtom(googleAIHostAtom)
 	const [googleAIKey, setGoogleAIKey] = useAtom(googleAIKeyAtom)
 	const [googleAIModel, setGoogleAIModel] = useAtom(googleAIModelAtom)
+	const [groqApiKey, setGroqApiKey] = useAtom(groqApiKeyAtom)
+	const [groqApiModel, setGroqApiModel] = useAtom(groqApiModelAtom)
 
 	storage.watch({
 		[ConstEnum.DEFAULT_ENGINE]: c => setEngine(c.newValue),
@@ -90,6 +94,8 @@ function Options() {
 		[ConstEnum.CHATGPT_MODEL]: c => setChatGPTModel(c.newValue),
 		[ConstEnum.GOOGLE_AI_KEY]: c => setGoogleAIKey(c.newValue),
 		[ConstEnum.GOOGLE_AI_MODEL]: c => setGoogleAIModel(c.newValue),
+		[ConstEnum.GROQ_API_KEY]: c => setGroqApiKey(c.newValue),
+		[ConstEnum.GROQ_API_MODEL]: c => setGroqApiModel(c.newValue),
 		[ConstEnum.IS_ENABLE_CONTEXT_MENU]: c =>
 			setIsEnableContextMenu(c.newValue),
 	})
@@ -301,6 +307,61 @@ function Options() {
 		)
 	}
 
+	const GroqAPISettings = () => {
+		return (
+			<div className="flex flex-col justify-between gap-3">
+				<div className="flex flex-row justify-between gap-4 mx-2">
+					<Text as="span" weight="medium">
+						API Key:
+					</Text>
+					<TextField.Root className="max-w-lg grow">
+						<TextField.Input
+							radius="large"
+							placeholder="Please enter the API key"
+							value={groqApiKey}
+							onChange={e => {
+								saveToStorage(
+									ConstEnum.GROQ_API_KEY,
+									e.target.value
+								)
+							}}
+						/>
+					</TextField.Root>
+				</div>
+				<div className="flex flex-row items-center justify-between gap-4 mx-2">
+					<Text as="span" weight="medium">
+						API Model:
+					</Text>
+					<Select.Root
+						value={groqApiModel}
+						onValueChange={e => {
+							saveToStorage(ConstEnum.GROQ_API_MODEL, e)
+						}}
+					>
+						<Select.Trigger className="max-w-lg grow" />
+						<Select.Content>
+							<Select.Item value="llama3-8b-8192">
+								LLaMA3 8b
+							</Select.Item>
+							<Select.Item value="llama3-70b-8192">
+								LLaMA3 70b
+							</Select.Item>
+							<Select.Item value="llama2-70b-4096">
+								LLaMA2 70b
+							</Select.Item>
+							<Select.Item value="mixtral-8x7b-32768">
+								Mixtral 8x7b
+							</Select.Item>
+							<Select.Item value="gemma-7b-it">
+								Gemma 7b
+							</Select.Item>
+						</Select.Content>
+					</Select.Root>
+				</div>
+			</div>
+		)
+	}
+
 	const contextMenuSettings = () => {
 		return (
 			<div className="flex flex-row items-center justify-between gap-4 p-4 m-2 bg-gray-100 rounded-lg">
@@ -368,6 +429,13 @@ function Options() {
 							GOOGLE_AI_URL
 						)}
 						{engine == EngineEnum.GoogleAI && googleAISettings()}
+
+						{settingNameToIdComponent(EngineEnum.Groq)}
+						{engineDescriptionComponent(
+							EngineEnum.Groq,
+							"https://console.groq.com"
+						)}
+						{engine == EngineEnum.Groq && GroqAPISettings()}
 					</div>
 				</RadioGroup.Root>
 			</div>

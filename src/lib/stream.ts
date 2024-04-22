@@ -1,6 +1,7 @@
 import { BaseChatModel } from "@langchain/core/language_models/chat_models"
 import { StringOutputParser } from "@langchain/core/output_parsers"
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai"
+import { ChatGroq } from "@langchain/groq"
 import { ChatOpenAI } from "@langchain/openai"
 import { BardChat } from "~lib/api/bard"
 import { BingChat } from "~lib/api/bing"
@@ -87,5 +88,16 @@ export default async function handleStream(
 				body.language,
 				body.tone
 			)
+			break
+		case EngineEnum.Groq:
+			model = new ChatGroq({
+				model: body.apiModel,
+				apiKey: body.apiKey,
+			})
+			await chatStream(model, finalPrompt, port)
+			break
+		default:
+			port.postMessage("Invalid Engine")
+			port.postMessage("[DONE]")
 	}
 }

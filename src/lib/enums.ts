@@ -16,6 +16,8 @@ export enum ConstEnum {
 	GOOGLE_AI_HOST = "google-ai-host",
 	GOOGLE_AI_KEY = "google-ai-key",
 	GOOGLE_AI_MODEL = "google-ai-model",
+	GROQ_API_KEY = "groq-api-key",
+	GROQ_API_MODEL = "groq-api-model",
 }
 
 export enum EngineEnum {
@@ -26,6 +28,7 @@ export enum EngineEnum {
 	GoogleAI = "google-ai",
 	Bing = "bing",
 	Claude = "claude",
+	Groq = "groq",
 }
 
 export const EngineMappings = {
@@ -36,6 +39,7 @@ export const EngineMappings = {
 	[EngineEnum.Bing]: "🔎 Bing",
 	[EngineEnum.Claude]: "🤖 Claude",
 	[EngineEnum.GoogleAI]: "🤖 Google AI",
+	[EngineEnum.Groq]: "🤖 Groq",
 }
 
 export const EngineOptions: PromptType[] = [
@@ -46,11 +50,12 @@ export const EngineOptions: PromptType[] = [
 	{ label: "🔎 Bing", value: EngineEnum.Bing, category: "" },
 	{ label: "🤖 Claude", value: EngineEnum.Claude, category: "" },
 	{ label: "🤖 Google AI", value: EngineEnum.GoogleAI, category: "" },
+	{ label: "🤖 Groq", value: EngineEnum.Groq, category: "" },
 ]
 
 export enum OpenAIModelEnum {
 	gpt35turbo = "gpt-3.5-turbo",
-	gpt4 = "gpt-4",
+	gpt4turbo = "gpt-4-turbo",
 }
 
 export const OpenAIModelOptions: PromptType[] = [
@@ -59,7 +64,7 @@ export const OpenAIModelOptions: PromptType[] = [
 		value: OpenAIModelEnum.gpt35turbo,
 		category: "",
 	},
-	{ label: "🤖 GPT-4", value: OpenAIModelEnum.gpt4, category: "" },
+	{ label: "🤖 GPT-4", value: OpenAIModelEnum.gpt4turbo, category: "" },
 ]
 
 export enum ProcessTypeEnum {

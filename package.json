@@ -16,6 +16,7 @@
 		"@langchain/community": "^0.0.50",
 		"@langchain/core": "^0.1.58",
 		"@langchain/google-genai": "^0.0.11",
+		"@langchain/groq": "^0.0.8",
 		"@langchain/openai": "^0.0.28",
 		"@plasmohq/messaging": "^0.1.8",
 		"@plasmohq/storage": "^1.9.0",
