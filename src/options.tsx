@@ -233,7 +233,7 @@ function Options() {
 					<TextField.Root className="max-w-lg grow">
 						<TextField.Input
 							radius="large"
-							placeholder={`OpenAI API URL, default: ${DEFAULT_OPENAI_API_URL}`}
+							placeholder={`OpenAI API Base URL, default: ${DEFAULT_OPENAI_API_URL}`}
 							value={openAIAPIHost}
 							onChange={e =>
 								saveToStorage(

@@ -8,7 +8,7 @@ export const storage = new Storage({
 	area: "local",
 })
 
-export const DEFAULT_OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
+export const DEFAULT_OPENAI_API_URL = "https://api.openai.com/v1"
 export const DEFAULT_OPENAI_API_MODEL = "gpt-3.5-turbo"
 export const DEFAULT_CHATGPT_MODEL = "text-davinci-002-render-sha"
 
